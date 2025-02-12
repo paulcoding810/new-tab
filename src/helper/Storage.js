@@ -22,7 +22,7 @@ export default class Storage {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError)
         } else {
-          resolve(key ? result[this.namespace][key] : result[this.namespace])
+          resolve(key ? result[this.namespace]?.[key] : result[this.namespace])
         }
       })
     })
