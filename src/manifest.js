@@ -17,6 +17,7 @@ export default defineManifest({
   action: {
     default_icon: 'img/logo-48.png',
   },
+  options_page: 'options.html',
   background: {
     service_worker: 'src/background/index.js',
     type: 'module',
