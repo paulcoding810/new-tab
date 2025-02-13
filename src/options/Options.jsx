@@ -27,6 +27,12 @@ async function saveVideoBlob(videoUrl, onProgress) {
   return video
 }
 
+async function isPermissionsGranted() {
+  return await chrome.permissions.contains({
+    origins: ['https://*/*'],
+  })
+}
+
 export const Options = () => {
   const [media, setMedia] = useState(null)
   const [medias, setMedias] = useState([])
@@ -34,6 +40,7 @@ export const Options = () => {
   const [progress, setProgress] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [granted, setGranted] = useState(false)
 
   function logAndSetError(error) {
     setError(error)
@@ -93,11 +100,74 @@ export const Options = () => {
       .catch(logAndSetError)
   }
 
+  function requestPermission() {
+    chrome.permissions.request(
+      {
+        origins: ['https://*/*'],
+      },
+      (granted) => {
+        if (granted) {
+          setGranted(true)
+          showToast('Permission granted')
+        } else {
+          showToast('Permission denied')
+        }
+      },
+    )
+  }
+
+  // const onVisibilitychange = useCallback((event) => {
+  //   if (document.visibilityState === 'visible') {
+  //     console.log('checking permission')
+  //     isPermissionsGranted().then((res) => console.log('granted=', res))
+  //     isPermissionsGranted().then(setGranted)
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   document.addEventListener('visibilitychange', onVisibilitychange)
+  //   return () => {
+  //     document.removeEventListener('visibilitychange', onVisibilitychange)
+  //   }
+  // }, [onVisibilitychange])
+
   useEffect(() => {
     db.open().then(async (_) => {
       fetchMedias()
     })
+
+    isPermissionsGranted().then((res) => setGranted(res))
   }, [])
+
+  if (!granted)
+    return (
+      <div className="flex flex-col items-center justify-center flex-1 gap-4">
+        <h1 className="text-2xl font-bold text-red-500">Permission Denied</h1>
+        <p>This extension requires access to your data on all websites to function correctly.</p>
+        <p>
+          It retrieves media data from the user's URL and saves it to IndexedDB for offline viewing.
+          It does not store user-generated content or third-party cookies, nor does it track or
+          share user activity.
+        </p>
+        <p>
+          This extension is open-source and available on{' '}
+          <a
+            href="https://github.com/paulcoding810/new-tab"
+            className="text-blue-700 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Github.
+          </a>
+        </p>
+        <button
+          className="px-4 py-2 font-bold text-blue-700 uppercase bg-white border border-blue-500 rounded-lg hover:bg-blue-200"
+          onClick={requestPermission}
+        >
+          Request Permission
+        </button>
+      </div>
+    )
 
   return (
     <main className="flex flex-col flex-1 w-screen h-screen">
