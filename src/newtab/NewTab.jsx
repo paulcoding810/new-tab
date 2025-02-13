@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react'
-import IndexedDBWrapper from '../helper/IDB'
-import Storage from '../helper/Storage'
+import { db, settingsStorage } from '../helper'
 import '../index.css'
 import Background from './Background'
 import Time from './Time'
-
-const db = new IndexedDBWrapper('NewTab', 'media')
-const settingsStorage = new Storage('settings')
 
 export const NewTab = () => {
   const [media, setMedia] = useState(null)
@@ -26,7 +22,7 @@ export const NewTab = () => {
     })
 
     settingsStorage.get().then(setConfig)
- }, [])
+  }, [])
 
   return (
     <div className="fixed flex flex-col flex-1 w-screen h-screen">

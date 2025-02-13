@@ -5,34 +5,10 @@ import downloadIcon from '../assets/download.svg'
 import loadingIcon from '../assets/loading.svg'
 import ProgressBar from '../components/ProgressBar'
 import { showToast } from '../components/Toast'
-import IndexedDBWrapper from '../helper/IDB'
-import Storage from '../helper/Storage'
+import { db, isPermissionsGranted, saveVideoBlob, settingsStorage } from '../helper'
 import '../index.css'
 import Background from '../newtab/Background'
-import { fetchVideo } from '../xhr'
 import ConfigSection from './ConfigSection'
-
-const db = new IndexedDBWrapper('NewTab', 'media')
-const settingsStorage = new Storage('settings')
-
-async function saveVideoBlob(videoUrl, onProgress) {
-  const blob = await fetchVideo(videoUrl, onProgress)
-
-  const id = await db.add({
-    blob,
-    url: videoUrl,
-  })
-
-  const video = await db.get(id)
-
-  return video
-}
-
-async function isPermissionsGranted() {
-  return await chrome.permissions.contains({
-    origins: ['https://*/*'],
-  })
-}
 
 export const Options = () => {
   const [media, setMedia] = useState(null)
