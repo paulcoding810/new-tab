@@ -8,14 +8,21 @@ const db = new IndexedDBWrapper('NewTab', 'media')
 async function saveMediaBlob(mediaUrl, onProgress) {
   const blob = await fetchMedia(mediaUrl, onProgress)
 
-  const id = await db.add({
-    blob,
-    url: mediaUrl,
-  })
+  console.log({ blob })
 
-  const media = await db.get(id)
+  if (blob.type.startsWith('video') || blob.type.startsWith('image')) {
+    const id = await db.add({
+      blob,
+      url: mediaUrl,
+    })
 
-  return media
+    const media = await db.get(id)
+
+    return media
+  } else {
+    console.error(`Unsupported type ${blob.type}`, blob, mediaUrl)
+    throw new Error('Unable to process media as it is neither an image nor a video.')
+  }
 }
 
 async function isPermissionsGranted() {

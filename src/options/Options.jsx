@@ -13,7 +13,7 @@ import ConfigSection from './ConfigSection'
 export const Options = () => {
   const [media, setMedia] = useState(null)
   const [medias, setMedias] = useState([])
-  const [url, setUrl] = useState('https://www.w3schools.com/html/mov_bbb.mp4')
+  const [url, setUrl] = useState('')
   const [progress, setProgress] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -25,7 +25,10 @@ export const Options = () => {
   }
 
   async function fetchMedia() {
-    if (!url) return console.error('No URL provided')
+    if (!url) {
+      setError({ message: 'No URL provided' })
+      return console.error('No URL provided')
+    }
 
     // check if media already exists in db
     const foundMedia = medias.find((item) => item.url === url)
@@ -168,7 +171,7 @@ export const Options = () => {
           <div className="flex items-center self-center flex-1 h-4">
             {progress > 0 && isLoading && <ProgressBar progress={progress} />}
           </div>
-          {error && <p className="text-red-500">{error.message}</p>}
+          {error && <p className="self-center text-red-500">{error.message}</p>}
 
           {/* {media && (
         <div className="flex flex-col items-center flex-1 gap-2">
