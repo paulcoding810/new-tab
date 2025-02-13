@@ -215,7 +215,7 @@ export const Options = () => {
                         <span>Download</span>
                       </button>
                       <button
-                        className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200"
+                        className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-red-500 border border-red-500 rounded hover:bg-red-200"
                         onClick={() => deleteMedia(item)}
                       >
                         <img src={deleteIcon} />
