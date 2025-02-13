@@ -8,10 +8,9 @@ import Time from './Time'
 const db = new IndexedDBWrapper('NewTab', 'media')
 const settingsStorage = new Storage('settings')
 
-const config = settingsStorage.get() ?? {}
-
 export const NewTab = () => {
   const [media, setMedia] = useState(null)
+  const [config, setConfig] = useState({})
 
   useEffect(() => {
     settingsStorage.get('videoId').then((videoId) => {
@@ -25,7 +24,9 @@ export const NewTab = () => {
           })
       }
     })
-  }, [])
+
+    settingsStorage.get().then(setConfig)
+ }, [])
 
   return (
     <div className="fixed flex flex-col flex-1 w-screen h-screen">
