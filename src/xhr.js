@@ -1,4 +1,4 @@
-export function fetchVideo(url, onProgress) {
+export function fetchMedia(url, onProgress) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     xhr.open('GET', url, true)
@@ -14,11 +14,12 @@ export function fetchVideo(url, onProgress) {
       if (xhr.status === 200) {
         resolve(xhr.response)
       } else {
-        reject('Failed to load video')
+        reject('Failed to load media')
       }
     }
 
-    xhr.onerror = () => {
+    xhr.onerror = (e) => {
+      console.error('Failed to fetch media: ', url, e)
       reject('Request failed')
     }
 

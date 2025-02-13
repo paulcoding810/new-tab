@@ -5,7 +5,7 @@ import downloadIcon from '../assets/download.svg'
 import loadingIcon from '../assets/loading.svg'
 import ProgressBar from '../components/ProgressBar'
 import { showToast } from '../components/Toast'
-import { db, isPermissionsGranted, saveVideoBlob, settingsStorage } from '../helper'
+import { db, isPermissionsGranted, saveMediaBlob, settingsStorage } from '../helper'
 import '../index.css'
 import Background from '../newtab/Background'
 import ConfigSection from './ConfigSection'
@@ -27,10 +27,10 @@ export const Options = () => {
   async function fetchMedia() {
     if (!url) return console.error('No URL provided')
 
-    // check if video already exists in db
+    // check if media already exists in db
     const foundMedia = medias.find((item) => item.url === url)
     if (foundMedia) {
-      showToast('Video already exists in database')
+      showToast('Media already exists in database')
       setMedia(foundMedia)
       return foundMedia
     }
@@ -39,7 +39,7 @@ export const Options = () => {
     setMedia(null)
     setIsLoading(true)
     try {
-      const data = await saveVideoBlob(url, setProgress)
+      const data = await saveMediaBlob(url, setProgress)
       setMedia(data)
       fetchMedias()
     } catch (error) {
@@ -59,9 +59,9 @@ export const Options = () => {
 
   async function deleteMedia(item) {
     const id = item.id
-    const currentId = await settingsStorage.get('videoId')
+    const currentId = await settingsStorage.get('mediaId')
     if (id === currentId) {
-      await settingsStorage.set('videoId', null)
+      await settingsStorage.set('mediaId', null)
     }
     db.delete(id)
       .then(() => fetchMedias())
@@ -70,7 +70,7 @@ export const Options = () => {
 
   function applyMedia(newMedia) {
     settingsStorage
-      .set('videoId', newMedia.id)
+      .set('mediaId', newMedia.id)
       .then(() => {
         showToast('Changes applied successfully')
       })
@@ -155,7 +155,7 @@ export const Options = () => {
             className="flex flex-1 px-2 py-1 border-2 border-blue-500 rounded outline-none"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Enter Video URL"
+            placeholder="Enter Media URL"
           />
 
           <button

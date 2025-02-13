@@ -9,9 +9,9 @@ export const NewTab = () => {
   const [config, setConfig] = useState({})
 
   useEffect(() => {
-    settingsStorage.get('videoId').then((videoId) => {
-      if (videoId) {
-        db.get(videoId)
+    settingsStorage.get('mediaId').then((mediaId) => {
+      if (mediaId) {
+        db.get(mediaId)
           .then((res) => {
             setMedia(res)
           })

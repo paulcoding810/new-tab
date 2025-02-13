@@ -11,7 +11,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   try {
     const blob = await (await fetch(url)).blob()
     const id = db.add({ blob, url })
-    await settingsStorage.set('videoId', id)
+    await settingsStorage.set('mediaId', id)
     await settingsStorage.set('blur', 0)
     await settingsStorage.set('showsTime', true)
     await settingsStorage.set('initialized', true)

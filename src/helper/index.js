@@ -1,21 +1,21 @@
-import { fetchVideo } from '../xhr'
+import { fetchMedia } from '../xhr'
 import IndexedDBWrapper from './IDB'
 import Storage from './Storage'
 
 const settingsStorage = new Storage('settings')
 const db = new IndexedDBWrapper('NewTab', 'media')
 
-async function saveVideoBlob(videoUrl, onProgress) {
-  const blob = await fetchVideo(videoUrl, onProgress)
+async function saveMediaBlob(mediaUrl, onProgress) {
+  const blob = await fetchMedia(mediaUrl, onProgress)
 
   const id = await db.add({
     blob,
-    url: videoUrl,
+    url: mediaUrl,
   })
 
-  const video = await db.get(id)
+  const media = await db.get(id)
 
-  return video
+  return media
 }
 
 async function isPermissionsGranted() {
@@ -24,4 +24,4 @@ async function isPermissionsGranted() {
   })
 }
 
-export { db, isPermissionsGranted, saveVideoBlob, settingsStorage }
+export { db, isPermissionsGranted, saveMediaBlob, settingsStorage }
