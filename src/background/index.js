@@ -1,8 +1,22 @@
-console.log('background is running')
+import { db, settingsStorage } from '../helper'
 
-chrome.runtime.onMessage.addListener((request) => {
-  if (request.type === 'COUNT') {
-    console.log('background has received a message from popup, and count is ', request?.count)
+chrome.runtime.onInstalled.addListener(async () => {
+  console.log('background has been installed')
+  const initialized = await settingsStorage.get('initialized')
+  if (initialized) {
+    return
+  }
+
+  const url = chrome.runtime.getURL('img/cat.jpeg')
+  try {
+    const blob = await (await fetch(url)).blob()
+    const id = db.add({ blob, url })
+    await settingsStorage.set('videoId', id)
+    await settingsStorage.set('blur', 0)
+    await settingsStorage.set('showsTime', true)
+    await settingsStorage.set('initialized', true)
+  } catch (error) {
+    console.error('Failed to init data', error)
   }
 })
 
