@@ -32,3 +32,6 @@ async function isPermissionsGranted() {
 }
 
 export { db, isPermissionsGranted, saveMediaBlob, settingsStorage }
+
+globalThis['db'] = db
+globalThis['settingsStorage'] = settingsStorage
