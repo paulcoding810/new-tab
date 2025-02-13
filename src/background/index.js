@@ -10,11 +10,14 @@ chrome.runtime.onInstalled.addListener(async () => {
   const url = chrome.runtime.getURL('img/cat.jpeg')
   try {
     const blob = await (await fetch(url)).blob()
-    const id = db.add({ blob, url })
-    await settingsStorage.set('mediaId', id)
-    await settingsStorage.set('blur', 0)
-    await settingsStorage.set('showsTime', true)
-    await settingsStorage.set('initialized', true)
+    const id = await db.add({ blob, url })
+
+    await settingsStorage.setValue({
+      mediaId: id,
+      blur: 0,
+      showsTime: true,
+      initialized: true,
+    })
   } catch (error) {
     console.error('Failed to init data', error)
   }
