@@ -187,7 +187,7 @@ export const Options = () => {
         </button>
 
         <div className="flex items-center self-center flex-1 w-1/2 h-4">
-          {progress > 0 && <ProgressBar progress={progress} />}
+          {progress > 0 && isLoading && <ProgressBar progress={progress} />}
         </div>
         {error && <p className="text-red-500">{error.message}</p>}
 
