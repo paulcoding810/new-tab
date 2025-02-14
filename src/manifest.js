@@ -42,7 +42,7 @@ export default defineManifest({
       matches: [],
     },
   ],
-  permissions: ['tabs', 'storage'],
+  permissions: ['activeTab', 'scripting','contextMenus', 'tabs', 'storage'],
   host_permissions: ['https://*/*'],
   chrome_url_overrides: {
     newtab: 'newtab.html',
