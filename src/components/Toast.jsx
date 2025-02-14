@@ -30,4 +30,7 @@ const showToast = (message, duration) => {
     console.error('Toast component is not mounted yet!')
   }
 }
+
+Toast.displayName = 'Toast'
+
 export { showToast, Toast, toastRef }

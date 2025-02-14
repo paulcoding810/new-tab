@@ -1,6 +1,6 @@
 const Background = ({ media, blur = 0, width, height, ...props }) => {
   let style = {
-    filter: `blur(${(blur * 20) / 100 ?? 0}px)`, // max 20px
+    filter: `blur(${(blur * 20) / 100}px)`, // max 20px
     width,
     height,
   }
