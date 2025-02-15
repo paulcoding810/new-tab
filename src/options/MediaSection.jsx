@@ -195,14 +195,14 @@ const MediaSection = () => {
 
                 <div className="flex flex-row items-center justify-between w-full">
                   <button
-                    className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200"
+                    className="flex flex-row items-center gap-1 px-2 py-1 text-sm font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200"
                     onClick={() => applyMedia(item)}
                   >
                     <img src={checkIcon} />
                     <span>{isApplied ? 'Applied' : 'Apply'}</span>
                   </button>
                   <button
-                    className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200"
+                    className="flex flex-row items-center gap-1 px-2 py-1 text-sm font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200"
                     onClick={() => {
                       downloadBlob(item.blob, Date.now())
                     }}
@@ -211,7 +211,7 @@ const MediaSection = () => {
                     <span>Download</span>
                   </button>
                   <button
-                    className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-red-500 border border-red-500 rounded hover:bg-red-200"
+                    className="flex flex-row items-center gap-1 px-2 py-1 text-sm font-bold text-red-500 border border-red-500 rounded hover:bg-red-200"
                     onClick={() => deleteMedia(item)}
                   >
                     <img src={deleteIcon} />
