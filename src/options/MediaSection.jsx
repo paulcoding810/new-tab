@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import checkIcon from '../assets/check.svg'
+import colors from 'tailwindcss/colors'
+import Check from '../assets/check.svg?react'
 import deleteIcon from '../assets/delete.svg'
 import downloadIcon from '../assets/download.svg'
 import loadingIcon from '../assets/loading.svg'
@@ -179,6 +180,9 @@ const MediaSection = () => {
           {medias.toReversed().map((item) => {
             const isApplied = item.id === media?.id
             const backgroundStyle = isApplied ? 'bg-blue-50 border-blue-500' : 'bg-white'
+            const buttonStyle = isApplied
+              ? 'text-green-500 border-green-500'
+              : 'text-blue-500 border-blue-500 hover:bg-blue-200'
 
             return (
               <div
@@ -195,10 +199,10 @@ const MediaSection = () => {
 
                 <div className="flex flex-row items-center justify-between w-full">
                   <button
-                    className="flex flex-row items-center gap-1 px-2 py-1 text-sm font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200"
+                    className={`flex flex-row items-center gap-1 px-2 py-1 text-sm font-bold border rounded  ${buttonStyle}`}
                     onClick={() => applyMedia(item)}
                   >
-                    <img src={checkIcon} />
+                    <Check fill={isApplied ? colors.green[500] : colors.blue[500]} />
                     <span>{isApplied ? 'Applied' : 'Apply'}</span>
                   </button>
                   <button
