@@ -38,8 +38,7 @@ const MediaSection = () => {
 
     if (foundMedia) {
       showToast('Media already exists in database')
-      setMedia(foundMedia)
-      return foundMedia
+      return
     }
 
     setProgress(0)
@@ -79,6 +78,7 @@ const MediaSection = () => {
     settingsStorage
       .set('mediaId', newMedia.id)
       .then(() => {
+        setMedia(newMedia)
         showToast('Changes applied successfully')
       })
       .catch(logAndSetError)
@@ -105,9 +105,20 @@ const MediaSection = () => {
     setUrl(text)
   }
 
+  async function getAppliedMedia() {
+    try {
+      const mediaId = await settingsStorage.get('mediaId')
+      if (mediaId) setMedia(await db.get(mediaId))
+      else setMedia(null)
+    } catch (error) {
+      logAndSetError(error)
+    }
+  }
+
   useEffect(() => {
     db.open().then(async (_) => {
       fetchMedias()
+      getAppliedMedia()
     })
 
     isPermissionsGranted().then((res) => setGranted(res))
@@ -143,7 +154,6 @@ const MediaSection = () => {
       </div>
     )
 
-    
   return (
     <div className="flex flex-col justify-center gap-2">
       <h2 className="mb-2 text-xl font-bold">Background</h2>
@@ -166,8 +176,8 @@ const MediaSection = () => {
         <h3 className="text-lg font-semibold text-gray-800">{`${medias.length} items.`}</h3>
         <div className="flex flex-row flex-wrap gap-2">
           {medias.toReversed().map((item) => {
-            const backgroundStyle =
-              item.url === media?.url ? 'bg-green-200 border-blue-500' : 'bg-white'
+            const isApplied = item.id === media?.id
+            const backgroundStyle = isApplied ? 'bg-blue-50 border-blue-500' : 'bg-white'
 
             return (
               <div
@@ -188,7 +198,7 @@ const MediaSection = () => {
                     onClick={() => applyMedia(item)}
                   >
                     <img src={checkIcon} />
-                    <span>Apply</span>
+                    <span>{isApplied ? 'Applied' : 'Apply'}</span>
                   </button>
                   <button className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200">
                     <img src={downloadIcon} />
