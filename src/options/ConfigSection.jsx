@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { settingsStorage } from '../helper'
 
-const ConfigSection = ({ settingsStorage }) => {
+const ConfigSection = () => {
   const [showsTime, setshowsTime] = useState(false)
   const [blurValue, setBlurValue] = useState(0)
 

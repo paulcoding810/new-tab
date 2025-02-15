@@ -33,7 +33,16 @@ async function isPermissionsGranted() {
   })
 }
 
-export { db, isPermissionsGranted, saveMediaBlob, settingsStorage }
+function isValidURL(string) {
+  try {
+    new URL(string)
+    return true
+  } catch (_) {
+    return false
+  }
+}
+
+export { db, isPermissionsGranted, isValidURL, saveMediaBlob, settingsStorage }
 
 globalThis['db'] = db
 globalThis['settingsStorage'] = settingsStorage
