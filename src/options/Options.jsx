@@ -30,8 +30,8 @@ export const Options = () => {
       return console.error('No URL provided')
     }
 
-    // check if media already exists in db
-    const foundMedia = medias.find((item) => item.url === url)
+    const foundMedia = await db.getByIndex('urlIndex', url)
+
     if (foundMedia) {
       showToast('Media already exists in database')
       setMedia(foundMedia)

@@ -3,7 +3,9 @@ import IndexedDBWrapper from './IDB'
 import Storage from './Storage'
 
 const settingsStorage = new Storage('settings')
-const db = new IndexedDBWrapper('NewTab', 'media')
+const db = new IndexedDBWrapper('NewTab', 'media', 2, [
+  { name: 'urlIndex', keyPath: 'url', options: { unique: true } },
+])
 
 async function saveMediaBlob(mediaUrl, onProgress) {
   const blob = await fetchMedia(mediaUrl, onProgress)
