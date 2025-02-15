@@ -26,7 +26,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.action.onClicked.addListener((tab) => {
   const url = chrome.runtime.getURL('options.html')
-  chrome.tabs.create({ url: 'options.html' })
+  chrome.tabs.create({ url })
 })
 
 chrome.contextMenus.create({
