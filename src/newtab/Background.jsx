@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 const Background = ({ media, blur = 0, width, height, ...props }) => {
   let style = {
     filter: `blur(${(blur * 20) / 100}px)`, // max 20px
@@ -32,4 +34,4 @@ const Background = ({ media, blur = 0, width, height, ...props }) => {
   }
 }
 
-export default Background
+export default memo(Background)
