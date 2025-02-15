@@ -8,6 +8,7 @@ import ProgressBar from '../components/ProgressBar'
 import { showToast } from '../components/Toast'
 import { db, isPermissionsGranted, isValidURL, saveMediaBlob, settingsStorage } from '../helper'
 import Background from '../newtab/Background'
+import { downloadBlob } from './utils'
 
 const MediaSection = () => {
   const [media, setMedia] = useState(null)
@@ -200,7 +201,12 @@ const MediaSection = () => {
                     <img src={checkIcon} />
                     <span>{isApplied ? 'Applied' : 'Apply'}</span>
                   </button>
-                  <button className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200">
+                  <button
+                    className="flex flex-row items-center gap-1 px-2 py-1 font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-200"
+                    onClick={() => {
+                      downloadBlob(item.blob, Date.now())
+                    }}
+                  >
                     <img src={downloadIcon} />
                     <span>Download</span>
                   </button>
