@@ -3,7 +3,7 @@
   "displayName": "New Tab",
   "version": "1.0.1",
   "author": "paulcoding",
-  "description": "NewTab Extension lets you personalize your browser’s new tab page by fetching and displaying high-quality images or videos from external sources.",
+  "description": "Personalize your browser’s new tab page with high-quality images or videos from external sources.",
   "type": "module",
   "license": "MIT",
   "keywords": [
