@@ -44,11 +44,9 @@ const MediaSection = () => {
     }
 
     setProgress(0)
-    setMedia(null)
     setIsLoading(true)
     try {
-      const data = await saveMediaBlob(url, setProgress)
-      setMedia(data)
+      await saveMediaBlob(url, setProgress)
       fetchMedias()
     } catch (error) {
       logAndSetError(error)
