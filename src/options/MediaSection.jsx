@@ -4,10 +4,18 @@ import Check from '../assets/check.svg?react'
 import deleteIcon from '../assets/delete.svg'
 import downloadIcon from '../assets/download.svg'
 import loadingIcon from '../assets/loading.svg'
+import ImageUploader from '../components/ImageUploader'
 import Input from '../components/Input'
 import ProgressBar from '../components/ProgressBar'
 import { showToast } from '../components/Toast'
-import { db, isPermissionsGranted, isValidURL, saveMediaBlob, settingsStorage } from '../helper'
+import {
+  db,
+  fetchUrlAndSaveMediaBlob,
+  isPermissionsGranted,
+  isValidURL,
+  saveMediaBlob,
+  settingsStorage,
+} from '../helper'
 import Background from '../newtab/Background'
 import { downloadBlob } from './utils'
 
@@ -46,7 +54,7 @@ const MediaSection = () => {
     setProgress(0)
     setIsLoading(true)
     try {
-      await saveMediaBlob(url, setProgress)
+      await fetchUrlAndSaveMediaBlob(url, setProgress)
       fetchMedias()
     } catch (error) {
       logAndSetError(error)
@@ -105,6 +113,15 @@ const MediaSection = () => {
     setUrl(text)
   }
 
+  async function onFile(file) {
+    try {
+      await saveMediaBlob(`file://${file.name}`, file)
+      fetchMedias()
+    } catch (error) {
+      logAndSetError(error)
+    }
+  }
+
   async function getAppliedMedia() {
     try {
       const mediaId = await settingsStorage.get('mediaId')
@@ -158,6 +175,8 @@ const MediaSection = () => {
     <div className="flex flex-col justify-center gap-2">
       <h2 className="mb-2 text-xl font-bold">Background</h2>
 
+      <ImageUploader onFile={onFile} />
+      
       <Input value={url} setValue={onInputValue} placeholder="Enter Media URL" />
 
       <button

@@ -7,22 +7,23 @@ const db = new IndexedDBWrapper('NewTab', 'media', 2, [
   { name: 'urlIndex', keyPath: 'url', options: { unique: true } },
 ])
 
-async function saveMediaBlob(mediaUrl, onProgress) {
+async function fetchUrlAndSaveMediaBlob(mediaUrl, onProgress) {
   const blob = await fetchMedia(mediaUrl, onProgress)
+  saveMediaBlob(mediaUrl, blob)
+}
 
-  console.log({ blob })
-
+async function saveMediaBlob(url, blob) {
   if (blob.type.startsWith('video') || blob.type.startsWith('image')) {
     const id = await db.add({
       blob,
-      url: mediaUrl,
+      url,
     })
 
     const media = await db.get(id)
 
     return media
   } else {
-    console.error(`Unsupported type ${blob.type}`, blob, mediaUrl)
+    console.error(`Unsupported type ${blob.type}`, blob, url)
     throw new Error('Unable to process media as it is neither an image nor a video.')
   }
 }
@@ -42,7 +43,14 @@ function isValidURL(string) {
   }
 }
 
-export { db, isPermissionsGranted, isValidURL, saveMediaBlob, settingsStorage }
+export {
+  db,
+  isPermissionsGranted,
+  isValidURL,
+  fetchUrlAndSaveMediaBlob,
+  saveMediaBlob,
+  settingsStorage,
+}
 
 globalThis['db'] = db
 globalThis['settingsStorage'] = settingsStorage
