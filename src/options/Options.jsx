@@ -5,7 +5,7 @@ import MediaSection from './MediaSection'
 
 export const Options = () => {
   return (
-    <main className="flex flex-col flex-1 w-screen h-screen py-4 px-[25%]">
+    <main className="flex flex-col flex-1 w-screen h-screen py-4 px-[10%]">
       <ConfigSection />
       <hr className="my-2" />
       <MediaSection />
