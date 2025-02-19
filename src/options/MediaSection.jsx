@@ -172,28 +172,33 @@ const MediaSection = () => {
     )
 
   return (
-    <div className="flex flex-col justify-center gap-2">
+    <div className="flex flex-col gap-2">
       <h2 className="mb-2 text-xl font-bold">Background</h2>
+      <div className="flex flex-row space-x-4">
+        <ImageUploader onFile={onFile} />
 
-      <ImageUploader onFile={onFile} />
-      
-      <Input value={url} setValue={onInputValue} placeholder="Enter Media URL" />
+        <div className="w-full p-4 mx-auto text-center border rounded-lg">
+          <h2 className="mb-3 text-lg font-semibold">Or fetch from URL</h2>
+          <div className="flex flex-row items-center space-x-2">
+            <Input value={url} setValue={onInputValue} placeholder="Enter Media URL" />
+            <button
+              className={`flex self-center px-4 py-2 font-bold bg-white border ${url ? 'border-blue-500 text-blue-700 active:bg-blue-200' : ''} rounded`}
+              onClick={fetchMedia}
+            >
+              {isLoading ? <img className="w-6 h-6" src={loadingIcon} /> : 'Fetch'}
+            </button>
+          </div>
 
-      <button
-        className="flex self-center px-4 py-2 font-bold text-blue-700 uppercase bg-white border border-blue-500 rounded-lg"
-        onClick={fetchMedia}
-      >
-        {isLoading ? <img className="w-6 h-6" src={loadingIcon} /> : 'Fetch'}
-      </button>
-
-      <div className="flex items-center self-center flex-1 h-4">
-        {progress > 0 && isLoading && <ProgressBar progress={progress} />}
+          <div className="flex items-center self-center flex-1 h-4">
+            {progress > 0 && isLoading && <ProgressBar progress={progress} />}
+          </div>
+          {error && <p className="self-center text-red-500">{error.message}</p>}
+        </div>
       </div>
-      {error && <p className="self-center text-red-500">{error.message}</p>}
 
       <div>
         <h3 className="text-lg font-semibold text-gray-800">{`${medias.length} items.`}</h3>
-        <div className="flex flex-row flex-wrap gap-2">
+        <div className="flex flex-row flex-wrap justify-center gap-2 mt-4" >
           {medias.toReversed().map((item) => {
             const isApplied = item.id === media?.id
             const backgroundStyle = isApplied ? 'bg-blue-50 border-blue-500' : 'bg-white'

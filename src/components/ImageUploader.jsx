@@ -49,7 +49,7 @@ export default function MediaUploader({ onFile }) {
         ref={ref}
         accept="image/*, video/*"
         onChange={handleFileChange}
-        className="block w-full p-2 mb-3 border rounded"
+        className="block w-full p-2 mb-3 bg-white border rounded"
       />
 
       <p className="mt-2 text-sm text-gray-500">Or paste an image/video (Ctrl + V)</p>
