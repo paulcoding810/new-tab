@@ -3,6 +3,8 @@ import colors from 'tailwindcss/colors'
 import Check from '../assets/check.svg?react'
 import deleteIcon from '../assets/delete.svg'
 import downloadIcon from '../assets/download.svg'
+import ExpandDown from '../assets/expand_down.svg?react'
+import ExpandUp from '../assets/expand_up.svg?react'
 import loadingIcon from '../assets/loading.svg'
 import ImageUploader from '../components/ImageUploader'
 import Input from '../components/Input'
@@ -27,6 +29,7 @@ const MediaSection = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [granted, setGranted] = useState(false)
+  const [expaned, setExpanded] = useState(false)
 
   function logAndSetError(error) {
     setError(error)
@@ -122,6 +125,10 @@ const MediaSection = () => {
     }
   }
 
+  function toggleExpand() {
+    setExpanded((value) => !value)
+  }
+
   async function getAppliedMedia() {
     try {
       const mediaId = await settingsStorage.get('mediaId')
@@ -173,32 +180,41 @@ const MediaSection = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="mb-2 text-xl font-bold">Background</h2>
-      <div className="flex flex-row space-x-4">
-        <ImageUploader onFile={onFile} />
-
-        <div className="w-full p-4 mx-auto text-center border rounded-lg">
-          <h2 className="mb-3 text-lg font-semibold">Or fetch from URL</h2>
-          <div className="flex flex-row items-center space-x-2">
-            <Input value={url} setValue={onInputValue} placeholder="Enter Media URL" />
-            <button
-              className={`flex self-center px-4 py-2 font-bold bg-white border ${url ? 'border-blue-500 text-blue-700 active:bg-blue-200' : ''} rounded`}
-              onClick={fetchMedia}
-            >
-              {isLoading ? <img className="w-6 h-6" src={loadingIcon} /> : 'Fetch'}
-            </button>
-          </div>
-
-          <div className="flex items-center self-center flex-1 h-4">
-            {progress > 0 && isLoading && <ProgressBar progress={progress} />}
-          </div>
-          {error && <p className="self-center text-red-500">{error.message}</p>}
-        </div>
+      <div className="flex flex-row items-center mb-2 space-x-2">
+        <h2 className="text-xl font-bold ">Background</h2>
+        {expaned ? (
+          <ExpandUp fill={colors.blue[700]} onClick={toggleExpand} />
+        ) : (
+          <ExpandDown fill={colors.blue[700]} onClick={toggleExpand} />
+        )}
       </div>
+      {expaned && (
+        <div className="flex flex-row space-x-4">
+          <ImageUploader onFile={onFile} />
+
+          <div className="w-full p-4 mx-auto text-center border rounded-lg">
+            <h2 className="mb-3 text-lg font-semibold">Or fetch from URL</h2>
+            <div className="flex flex-row items-center space-x-2">
+              <Input value={url} setValue={onInputValue} placeholder="Enter Media URL" />
+              <button
+                className={`flex self-center px-4 py-2 font-bold bg-white border ${url ? 'border-blue-500 text-blue-700 active:bg-blue-200' : ''} rounded`}
+                onClick={fetchMedia}
+              >
+                {isLoading ? <img className="w-6 h-6" src={loadingIcon} /> : 'Fetch'}
+              </button>
+            </div>
+
+            <div className="flex items-center self-center flex-1 h-4">
+              {progress > 0 && isLoading && <ProgressBar progress={progress} />}
+            </div>
+            {error && <p className="self-center text-red-500">{error.message}</p>}
+          </div>
+        </div>
+      )}
 
       <div>
         <h3 className="text-lg font-semibold text-gray-800">{`${medias.length} items.`}</h3>
-        <div className="flex flex-row flex-wrap justify-center gap-2 mt-4" >
+        <div className="flex flex-row flex-wrap justify-center gap-2 mt-4">
           {medias.toReversed().map((item) => {
             const isApplied = item.id === media?.id
             const backgroundStyle = isApplied ? 'bg-blue-50 border-blue-500' : 'bg-white'
