@@ -88,7 +88,7 @@ yarn zip:firefox # for firefox
 [Issues]: https://github.com/paulcoding810/new-tab/issues
 
 [Badge Commits]: https://img.shields.io/github/commit-activity/m/paulcoding810/new-tab?label=Commits
-[Badge Mozilla]: https://img.shields.io/amo/rating/new-tab?label=Firefox
+[Badge Mozilla]: https://img.shields.io/amo/v/new-tab-paulcoding
+[Badge Chrome]: https://img.shields.io/chrome-web-store/v/jiibpofabngjenalkdgpkhgifmoabnij
 [Badge License]: https://img.shields.io/badge/License-MIT-yellow.svg
-[Badge Chrome]: https://img.shields.io/chrome-web-store/rating/jiibpofabngjenalkdgpkhgifmoabnij?label=Chrome
 [Badge Issues]: https://img.shields.io/github/issues/paulcoding810/new-tab/issues
