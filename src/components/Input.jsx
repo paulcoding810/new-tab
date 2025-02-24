@@ -14,7 +14,7 @@ const Input = ({ value, setValue, selectOnFocus = false, ...props }) => {
     <input
       onFocus={onFocus}
       onBlur={() => setFocused(false)}
-      className={`block w-full p-2 border rounded outline-none ${borderStyle}`}
+      className={`block w-full p-2 h-10 border rounded outline-none ${borderStyle}`}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       {...props}

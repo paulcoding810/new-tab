@@ -66,7 +66,7 @@ export default function MediaUploader({ onFiles }) {
       onDragOver={handleDragOver}
       onDragLeave={() => setIsDragging(false)}
     >
-      <h2 className="mb-3 text-lg font-semibold">Upload or Paste an Image/Video</h2>
+      <h2 className="mb-3 text-lg font-semibold">Upload, Drop or Paste Images/Videos</h2>
 
       <input
         type="file"
@@ -74,10 +74,8 @@ export default function MediaUploader({ onFiles }) {
         ref={ref}
         accept="image/*, video/*"
         onChange={handleUploadedFiles}
-        className="block w-full p-2 mb-3 bg-white border rounded"
+        className="block w-full h-10 p-2 mb-3 bg-white border rounded"
       />
-
-      <p className="mt-2 text-sm text-gray-500">Or paste an image/video (Ctrl + V)</p>
     </div>
   )
 }
