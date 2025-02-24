@@ -12,7 +12,6 @@ export default function MediaUploader({ onFile }) {
     if (file && file.type.match(/^(image|video)/)) {
       onFile(file)
     } else {
-      console.error('Invalid file type, please upload an image or video.', file)
       showToast('Invalid file type, please upload an image or video.')
     }
     clearInput()

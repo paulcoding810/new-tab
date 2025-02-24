@@ -6,8 +6,8 @@ import downloadIcon from '../assets/download.svg'
 import ExpandDown from '../assets/expand_down.svg?react'
 import ExpandUp from '../assets/expand_up.svg?react'
 import loadingIcon from '../assets/loading.svg'
-import ImageUploader from '../components/ImageUploader'
 import Input from '../components/Input'
+import MediaUploader from '../components/MediaUploader'
 import ProgressBar from '../components/ProgressBar'
 import { showToast } from '../components/Toast'
 import {
@@ -196,7 +196,7 @@ const MediaSection = () => {
       </div>
       {expaned && (
         <div className="flex flex-row space-x-4">
-          <ImageUploader onFile={onFile} />
+          <MediaUploader onFile={onFile} />
 
           <div className="w-full p-4 mx-auto text-center border rounded-lg">
             <h2 className="mb-3 text-lg font-semibold">Or fetch from URL</h2>
