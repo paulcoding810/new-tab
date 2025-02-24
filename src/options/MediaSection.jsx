@@ -122,7 +122,7 @@ const MediaSection = () => {
 
   async function onFile(file) {
     try {
-      await saveMediaBlob(`file://${file.name}`, file)
+      await saveMediaBlob(`file://${Date.now()}_${file.name}`, file)
       fetchMedias()
     } catch (error) {
       logAndSetError(error)
