@@ -13,18 +13,43 @@ async function fetchUrlAndSaveMediaBlob(mediaUrl, onProgress) {
 }
 
 async function saveMediaBlob(url, blob) {
-  if (blob.type.startsWith('video') || blob.type.startsWith('image')) {
-    const id = await db.add({
-      blob,
-      url,
-    })
+  await validateBlob(blob)
 
-    const media = await db.get(id)
+  const id = await db.add({
+    blob,
+    url,
+  })
 
-    return media
-  } else {
-    throw new Error('Unable to process media as it is neither an image nor a video.')
+  const media = await db.get(id)
+  return media
+}
+
+async function validateBlob(blob) {
+  const MAX_BLOB_SIZE = await settingsStorage.get('maxBlobSize')
+
+  if (blob.size > MAX_BLOB_SIZE) {
+    throw new Error(
+      `The blob size (${bytesToMB(blob.size)}) exceeds the maximum allowed size of ${bytesToMB(MAX_BLOB_SIZE)}.`,
+    )
   }
+  if (blob.size === 0) {
+    throw new Error('Empty blob!')
+  }
+  if (!blob.type.startsWith('video') && !blob.type.startsWith('image')) {
+    throw new Error(
+      `Type (${blob.type}) is not supported. It should be either 'video/*' or 'image/*'.`,
+    )
+  }
+  return true
+}
+
+async function isUrlDuplicated(url) {
+  const foundMedia = await db.getByIndex('urlIndex', url)
+  return Boolean(foundMedia)
+}
+
+function bytesToMB(bytes) {
+  return (bytes / (1024 * 1024)).toFixed(2) + ' MB'
 }
 
 async function isPermissionsGranted() {
@@ -43,12 +68,15 @@ function isValidURL(string) {
 }
 
 export {
+  bytesToMB,
   db,
   fetchUrlAndSaveMediaBlob,
   isPermissionsGranted,
+  isUrlDuplicated,
   isValidURL,
   saveMediaBlob,
   settingsStorage,
+  validateBlob,
 }
 
 globalThis['db'] = db

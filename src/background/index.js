@@ -1,4 +1,4 @@
-import { db, settingsStorage } from '../helper'
+import { db, isUrlDuplicated, settingsStorage, validateBlob } from '../helper'
 import { hideLoading, showError, showLoading, showSuccess } from './scripts'
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -13,11 +13,13 @@ chrome.runtime.onInstalled.addListener(async () => {
     const blob = await (await fetch(url)).blob()
     const id = await db.add({ blob, url })
 
+    // init settingsStorage with default values
     await settingsStorage.setValue({
       mediaId: id,
       blur: 0,
       showsTime: true,
       initialized: true,
+      maxBlobSize: 52_428_800, // 50MB in bytes
     })
   } catch (error) {
     console.error('Failed to init data', error)
@@ -43,9 +45,18 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         func: showLoading,
       })
       try {
-        // TODO: Check if url existed
-        const blob = await (await fetch(info.srcUrl)).blob()
-        const id = await db.add({ blob, url: info.srcUrl })
+        const url = info.srcUrl
+
+        if (!url) throw new Error('No srcUrl')
+        if (await isUrlDuplicated(url)) throw new Error('Item already exists!')
+
+        const response = await fetch(url)
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
+
+        const blob = await response.blob()
+        await validateBlob(blob)
+
+        const id = await db.add({ blob, url: url })
         await settingsStorage.set('mediaId', id)
         chrome.scripting.executeScript({
           target: { tabId: tab.id },
@@ -55,7 +66,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: showError,
-          args: [error],
+          args: [error.message],
         })
       } finally {
         chrome.scripting.executeScript({

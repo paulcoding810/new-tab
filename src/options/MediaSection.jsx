@@ -14,6 +14,7 @@ import {
   db,
   fetchUrlAndSaveMediaBlob,
   isPermissionsGranted,
+  isUrlDuplicated,
   isValidURL,
   saveMediaBlob,
   settingsStorage,
@@ -50,9 +51,9 @@ const MediaSection = () => {
       return
     }
 
-    const foundMedia = await db.getByIndex('urlIndex', url)
+    const duplicated = await isUrlDuplicated(url)
 
-    if (foundMedia) {
+    if (duplicated) {
       showToast('Media already exists in database')
       return
     }

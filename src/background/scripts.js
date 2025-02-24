@@ -19,10 +19,10 @@ function showSuccess() {
   }
 }
 
-function showError() {
+function showError(errorMsg) {
   const div = document.querySelector('.newtab-progress')
   if (div) {
-    div.textContent = 'Error'
+    div.textContent = errorMsg ?? 'Error'
   }
 }
 
@@ -31,7 +31,7 @@ function hideLoading() {
   if (div) {
     setTimeout(() => {
       div.style.display = 'none'
-    }, 1500);
+    }, 2000);
   }
 }
 
