@@ -29,7 +29,7 @@ const MediaSection = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [granted, setGranted] = useState(false)
-  const [expaned, setExpanded] = useState(false)
+  const [expaned, setExpanded] = useState(true)
 
   function logAndSetError(error) {
     if (typeof error == 'string') {
