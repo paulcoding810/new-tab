@@ -207,10 +207,11 @@ const MediaSection = () => {
             <div className="flex items-center self-center flex-1 h-4">
               {progress > 0 && isLoading && <ProgressBar progress={progress} />}
             </div>
-            {error && <p className="self-center text-red-500">{error.message}</p>}
           </div>
         </div>
       )}
+
+      {error && <p className="self-center text-red-500">{error.message}</p>}
 
       <div>
         <h3 className="text-lg font-semibold text-gray-800">{`${medias.length} items.`}</h3>

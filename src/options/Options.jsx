@@ -1,4 +1,3 @@
-import { settingsStorage } from '../helper'
 import '../index.css'
 import ConfigSection from './ConfigSection'
 import MediaSection from './MediaSection'
