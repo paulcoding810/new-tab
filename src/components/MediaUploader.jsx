@@ -1,38 +1,45 @@
 import { useEffect, useRef } from 'react'
 import { showToast } from './Toast'
 
-export default function MediaUploader({ onFile }) {
-  const ref = useRef();
+export default function MediaUploader({ onFiles }) {
+  const ref = useRef()
 
   const clearInput = () => {
-    ref.current.value = ""
+    ref.current.value = ''
   }
 
-  const processFile = (file) => {
-    if (file && file.type.match(/^(image|video)/)) {
-      onFile(file)
+  const filterMediaFiles = (files) => {
+    const filteredFiles = Array.from(files).filter(
+      (file) => file instanceof File && file.type.match(/^video\/.*|image\/.*/),
+    )
+    return filteredFiles
+  }
+
+  const handleUploadedFiles = (event) => {
+    const files = filterMediaFiles(event.target.files) // spread FileList and filter media files
+    if (files.length === 0) {
+      showToast('No valid files were uploaded')
     } else {
-      showToast('Invalid file type, please upload an image or video.')
+      onFiles(files)
     }
     clearInput()
   }
 
-  const handleFileChange = (event) => {
-    const newFile = event.target.files[0]
-    processFile(newFile)
-  }
-
   useEffect(() => {
     const handlePaste = (event) => {
-      const items = event.clipboardData?.items
-      if (items) {
-        for (let item of items) {
-          if (item.type.startsWith('image/') || item.type.startsWith('video/')) {
-            const file = item.getAsFile()
-            processFile(file)
-          }
-        }
+      if (!event.clipboardData) {
+        showToast('Paste not supported. Please upload the file manually.')
+        return
       }
+      const files = filterMediaFiles(
+        Array.from(event.clipboardData.items).map((item) => item.getAsFile()),
+      ) // spread ClipboardItems and filter media files
+      if (files.length !== 0) {
+        onFiles(files)
+      } else {
+        showToast('No valid files were pasted')
+      }
+      clearInput()
     }
 
     document.addEventListener('paste', handlePaste)
@@ -45,9 +52,10 @@ export default function MediaUploader({ onFile }) {
 
       <input
         type="file"
+        multiple
         ref={ref}
         accept="image/*, video/*"
-        onChange={handleFileChange}
+        onChange={handleUploadedFiles}
         className="block w-full p-2 mb-3 bg-white border rounded"
       />
 

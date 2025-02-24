@@ -120,9 +120,11 @@ const MediaSection = () => {
     setUrl(text)
   }
 
-  async function onFile(file) {
+  async function onFiles(files) {
     try {
-      await saveMediaBlob(`file://${Date.now()}_${file.name}`, file)
+      for (const file of files) {
+        await saveMediaBlob(`file://${Date.now()}_${file.name}`, file)
+      }
       fetchMedias()
     } catch (error) {
       logAndSetError(error)
@@ -196,7 +198,7 @@ const MediaSection = () => {
       </div>
       {expaned && (
         <div className="flex flex-row space-x-4">
-          <MediaUploader onFile={onFile} />
+          <MediaUploader onFiles={onFiles} />
 
           <div className="w-full p-4 mx-auto text-center border rounded-lg">
             <h2 className="mb-3 text-lg font-semibold">Or fetch from URL</h2>
