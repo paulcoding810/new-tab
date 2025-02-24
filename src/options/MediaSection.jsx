@@ -182,11 +182,13 @@ const MediaSection = () => {
     <div className="flex flex-col gap-2">
       <div className="flex flex-row items-center mb-2 space-x-2">
         <h2 className="text-xl font-bold ">Background</h2>
-        {expaned ? (
-          <ExpandUp fill={colors.blue[700]} onClick={toggleExpand} />
-        ) : (
-          <ExpandDown fill={colors.blue[700]} onClick={toggleExpand} />
-        )}
+        <div className="rounded-full cursor-pointer hover:bg-blue-200">
+          {expaned ? (
+            <ExpandUp fill={colors.blue[700]} onClick={toggleExpand} />
+          ) : (
+            <ExpandDown fill={colors.blue[700]} onClick={toggleExpand} />
+          )}
+        </div>
       </div>
       {expaned && (
         <div className="flex flex-row space-x-4">
