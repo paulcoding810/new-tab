@@ -16,7 +16,7 @@ export const NewTab = () => {
             setMedia(res)
           })
           .catch((err) => {
-            console.error('🚀 ~ db.get ~ err:', err)
+            console.error('[NewTab]: Failed to load media from db', err)
           })
       }
     })

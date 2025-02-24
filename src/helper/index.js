@@ -9,7 +9,7 @@ const db = new IndexedDBWrapper('NewTab', 'media', 2, [
 
 async function fetchUrlAndSaveMediaBlob(mediaUrl, onProgress) {
   const blob = await fetchMedia(mediaUrl, onProgress)
-  saveMediaBlob(mediaUrl, blob)
+  await saveMediaBlob(mediaUrl, blob)
 }
 
 async function saveMediaBlob(url, blob) {
@@ -23,7 +23,6 @@ async function saveMediaBlob(url, blob) {
 
     return media
   } else {
-    console.error(`Unsupported type ${blob.type}`, blob, url)
     throw new Error('Unable to process media as it is neither an image nor a video.')
   }
 }
@@ -45,9 +44,9 @@ function isValidURL(string) {
 
 export {
   db,
+  fetchUrlAndSaveMediaBlob,
   isPermissionsGranted,
   isValidURL,
-  fetchUrlAndSaveMediaBlob,
   saveMediaBlob,
   settingsStorage,
 }

@@ -32,19 +32,22 @@ const MediaSection = () => {
   const [expaned, setExpanded] = useState(false)
 
   function logAndSetError(error) {
+    if (typeof error == 'string') {
+      error = new Error(error)
+    }
     setError(error)
-    console.error(error)
+    console.error('[NewTab]:', error)
   }
 
   async function fetchMedia() {
     if (!url) {
-      setError({ message: 'No URL provided' })
-      return console.error('No URL provided')
+      logAndSetError('No URL provided')
+      return
     }
 
     if (!isValidURL(url)) {
-      setError({ message: 'Invalid URL' })
-      return console.error('Invalid URL')
+      logAndSetError('Invalid URL')
+      return
     }
 
     const foundMedia = await db.getByIndex('urlIndex', url)

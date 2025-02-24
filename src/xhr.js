@@ -14,13 +14,12 @@ export function fetchMedia(url, onProgress) {
       if (xhr.status === 200) {
         resolve(xhr.response)
       } else {
-        reject('Failed to load media')
+        reject(new Error(`Failed to load media: ${xhr.status} ${xhr.statusText}`))
       }
     }
 
     xhr.onerror = (e) => {
-      console.error('Failed to fetch media: ', url, e)
-      reject('Request failed')
+      reject(new Error(`Network error: ${xhr.status} ${xhr.statusText}`))
     }
 
     xhr.send()
