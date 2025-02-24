@@ -27,7 +27,7 @@ export const NewTab = () => {
   return (
     <div className="fixed flex flex-col flex-1 w-screen h-screen">
       <div className="absolute z-[-1] w-full h-full">
-        {media ? <Background media={media} blur={config.blur} /> : <img src="img/cat.jpeg" />}
+        {media && <Background media={media} blur={config.blur} />}
       </div>
       {config.showsTime && (
         <div className="absolute text-6xl font-bold text-white bottom-5 right-5">
