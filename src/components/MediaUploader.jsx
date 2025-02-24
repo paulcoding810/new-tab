@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { showToast } from './Toast'
 
 export default function MediaUploader({ onFiles }) {
+  const [isDragging, setIsDragging] = useState(false)
+
   const ref = useRef()
 
   const clearInput = () => {
@@ -23,6 +25,17 @@ export default function MediaUploader({ onFiles }) {
       onFiles(files)
     }
     clearInput()
+  }
+
+  const handleDrop = (event) => {
+    event.preventDefault()
+    setIsDragging(false)
+    handleUploadedFiles({ target: { files: event.dataTransfer.files ?? [] } })
+  }
+
+  const handleDragOver = (event) => {
+    event.preventDefault()
+    setIsDragging(true)
   }
 
   useEffect(() => {
@@ -47,7 +60,12 @@ export default function MediaUploader({ onFiles }) {
   }, [])
 
   return (
-    <div className="w-full p-4 mx-auto text-center border rounded-lg">
+    <div
+      className={`w-full p-4 mx-auto text-center border rounded-lg ${isDragging ? 'bg-blue-100 border-blue-500' : ''}`}
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={() => setIsDragging(false)}
+    >
       <h2 className="mb-3 text-lg font-semibold">Upload or Paste an Image/Video</h2>
 
       <input
