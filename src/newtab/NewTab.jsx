@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import MESSAGE from '../constants'
 import { db, settingsStorage } from '../helper'
 import '../index.css'
 import Background from './Background'
@@ -8,7 +9,7 @@ export const NewTab = () => {
   const [media, setMedia] = useState(null)
   const [config, setConfig] = useState({})
 
-  useEffect(() => {
+  function initialize() {
     settingsStorage.get('mediaId').then((mediaId) => {
       if (mediaId) {
         db.get(mediaId)
@@ -22,6 +23,26 @@ export const NewTab = () => {
     })
 
     settingsStorage.get().then(setConfig)
+  }
+
+  useEffect(() => {
+    initialize()
+  }, [])
+
+  useEffect(() => {
+    let timeout
+    function listener(request, _sender, _sendResponse) {
+      if (request.type === MESSAGE.SETTINGS_UPDATED) {
+        if (timeout) clearTimeout(timeout)
+        timeout = setTimeout(initialize, 200)
+      }
+    }
+    chrome.runtime.onMessage.addListener(listener)
+
+    return () => {
+      chrome.runtime.onMessage.removeListener(listener)
+      if (timeout) clearTimeout(timeout)
+    }
   }, [])
 
   return (

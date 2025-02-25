@@ -22,7 +22,7 @@ import {
 import Background from '../newtab/Background'
 import { downloadBlob } from './utils'
 
-const MediaSection = () => {
+const MediaSection = ({ onMediaApplied }) => {
   const [media, setMedia] = useState(null)
   const [medias, setMedias] = useState([])
   const [url, setUrl] = useState('')
@@ -94,6 +94,7 @@ const MediaSection = () => {
       .set('mediaId', newMedia.id)
       .then(() => {
         setMedia(newMedia)
+        onMediaApplied()
         showToast('Changes applied successfully')
       })
       .catch(logAndSetError)

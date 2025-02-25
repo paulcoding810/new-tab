@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { settingsStorage } from '../helper'
 
-const ConfigSection = () => {
+const ConfigSection = ({ onConfigChanged }) => {
   const [showsTime, setshowsTime] = useState(false)
   const [blurValue, setBlurValue] = useState(0)
 
@@ -16,7 +16,7 @@ const ConfigSection = () => {
     <div className="flex flex-col gap-2">
       <h2 className="mb-2 text-xl font-bold">Config</h2>
       <label htmlFor="showsTime" className="flex items-center gap-2">
-        <span className='w-[100px]'>Show Clock</span>
+        <span className="w-[100px]">Show Clock</span>
         <input
           type="checkbox"
           id="showsTime"
@@ -24,12 +24,13 @@ const ConfigSection = () => {
           onChange={(e) => {
             const checked = e.target.checked
             setshowsTime(checked)
+            onConfigChanged()
             settingsStorage.set('showsTime', checked)
           }}
         />
       </label>
       <label htmlFor="blurSlider" className="flex items-center gap-2">
-        <span className='w-[100px]'>Blur</span>
+        <span className="w-[100px]">Blur</span>
         <input
           type="range"
           id="blurSlider"
@@ -39,6 +40,7 @@ const ConfigSection = () => {
           onChange={(e) => {
             const newValue = parseInt(e.target.value)
             setBlurValue(newValue)
+            onConfigChanged()
             settingsStorage.set('blur', newValue)
           }}
         />

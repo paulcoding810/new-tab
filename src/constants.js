@@ -1,0 +1,5 @@
+const MESSAGE = {
+  SETTINGS_UPDATED: 'SETTINGS_UPDATED'
+}
+
+export default MESSAGE
