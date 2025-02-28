@@ -4,10 +4,12 @@ import { db, settingsStorage } from '../helper'
 import '../index.css'
 import Background from './Background'
 import Time from './Time'
+import Weather from './Weather'
 
 export const NewTab = () => {
   const [media, setMedia] = useState(null)
   const [config, setConfig] = useState({})
+  const [dominantColor, setDominantColor] = useState(null)
 
   function initialize() {
     settingsStorage.get('mediaId').then((mediaId) => {
@@ -48,10 +50,13 @@ export const NewTab = () => {
   return (
     <div className="fixed flex flex-col flex-1 w-screen h-screen">
       <div className="absolute z-[-1] w-full h-full select-none pointer-events-none">
-        {media && <Background media={media} blur={config.blur} />}
+        {media && <Background media={media} blur={config.blur} onColorThief={setDominantColor} />}
       </div>
       {config.showsTime && (
-        <div className="absolute text-6xl font-bold text-white bottom-5 right-5">
+        <div
+          className="absolute text-6xl font-bold text-white bottom-5 right-5"
+          style={{ color: dominantColor ?? 'black' }}
+        >
           <Time />
         </div>
       )}
