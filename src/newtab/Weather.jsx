@@ -35,9 +35,9 @@ function Weather() {
     async function getWeather() {
       const appid = await settingsStorage.get('weatherApiKey')
       const unit = await settingsStorage.get('weatherUnit')
-      setUnit(unit || 'C')
+      setUnit(unit)
 
-      if (!appid || !unit) {
+      if (!appid) {
         return console.warn('Please provide weather API key in settings')
       }
       if (coords) {
