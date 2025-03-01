@@ -60,6 +60,14 @@ export const NewTab = () => {
           <Time />
         </div>
       )}
+      {config.showsWeather && (
+        <div
+          className="absolute font-bold top-5 right-5"
+          style={{ color: dominantColor ?? 'black' }}
+        >
+          <Weather />
+        </div>
+      )}
     </div>
   )
 }
