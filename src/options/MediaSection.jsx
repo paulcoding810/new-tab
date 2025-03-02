@@ -209,6 +209,9 @@ const MediaSection = ({ onMediaApplied }) => {
                 setValue={onInputValue}
                 placeholder="Enter Media URL"
                 selectOnFocus={true}
+                onPaste={(e) => {
+                  e.stopPropagation();
+                }}
               />
               <button
                 className={`flex self-center px-4 py-2 font-bold bg-white border ${url ? 'border-blue-500 text-blue-700 active:bg-blue-200' : ''} rounded`}

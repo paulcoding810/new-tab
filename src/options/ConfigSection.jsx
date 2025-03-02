@@ -65,6 +65,9 @@ const ConfigSection = ({ onConfigChanged }) => {
               className="w-[250px] text-[10px] px-2 py-1 ml-4 border-2 border-gray-300 rounded outline-none focus:border-blue-500"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
+              onPaste={(e) => {
+                e.stopPropagation()
+              }}
             />
 
             <span>Unit</span>
