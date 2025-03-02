@@ -23,7 +23,8 @@ function Weather() {
             setCoords(newCoords)
           },
           (error) => {
-            console.warn(`ERROR(${error.code}): ${error.message}`)
+            showToast(error.message)
+            console.error(error)
           },
         )
       }
@@ -49,8 +50,13 @@ function Weather() {
             units: unit === 'C' ? 'metric' : 'imperial',
           })}`,
         )
-          .then((res) => res.json())
-          .then(setWeather)
+          .then(async (res) => {
+            const json = await res.json()
+            if (res.ok) {
+              setWeather(json)
+            } else
+              throw new Error(json.message ?? 'Unknown error occurred while fetching weather data.')
+          })
           .catch((error) => {
             console.error(error)
             showToast(error.message)
