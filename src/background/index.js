@@ -20,6 +20,10 @@ chrome.runtime.onInstalled.addListener(async () => {
       showsTime: true,
       initialized: true,
       maxBlobSize: 52_428_800, // 50MB in bytes
+      showsWeather: false,
+      weatherApiKey: null,
+      coords: null,
+      weatherUnit: 'C',
     })
   } catch (error) {
     console.error('Failed to init data', error)
