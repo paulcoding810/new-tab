@@ -35,7 +35,7 @@ function Weather() {
   useEffect(() => {
     async function getWeather() {
       const appid = await settingsStorage.get('weatherApiKey')
-      const unit = await settingsStorage.get('weatherUnit')
+      const unit = await settingsStorage.get('weatherUnit') ?? 'C'
       setUnit(unit)
 
       if (!appid) {
@@ -73,11 +73,12 @@ function Weather() {
 
   return (
     <div className="flex flex-col justify-center p-3 transition-all duration-500 ease-in-out transform rounded-lg shadow-md bg-white/50">
+      <p>{weather.name}</p>
       <p>
-        Temperature: {weather.main.temp}&deg;{unit}
+        {weather.main.temp}&deg;{unit}
       </p>
-      <p>Humidity: {weather.main.humidity}%</p>
-      <p>Pressure: {weather.main.pressure}hPa</p>
+      {/* <p>Humidity: {weather.main.humidity}%</p>
+      <p>Pressure: {weather.main.pressure}hPa</p> */}
       <p className="flex flex-col items-center">
         <img src={`/img/weathers/${weather.weather[0].icon}.png`} />
         {weather.weather[0].description}
