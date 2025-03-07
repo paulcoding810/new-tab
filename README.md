@@ -28,9 +28,9 @@ NewTab Extension lets you personalize your browser’s new tab page by fetching 
 
 ## 🚀 Features
 
-![New tab](https://github.com/user-attachments/assets/6fbc88f8-d10f-471d-82da-002c7764521b)
+![New tab](https://github.com/user-attachments/assets/8d6746e8-7332-4556-b4b4-2163af41151e)
 
-![Settings](https://github.com/user-attachments/assets/cea9644c-c573-48f0-bca2-2fde88c42850)
+![Settings](https://github.com/user-attachments/assets/a4e3ddd4-4bc3-49f8-a586-0e384c30875d)
 
 ## 💻 Development
 
