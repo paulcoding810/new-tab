@@ -1,124 +1,154 @@
 import { useEffect, useState } from 'react'
 import { settingsStorage } from '../helper'
+import Input from '../components/Input'
+
+const Toggle = ({ label, checked, onChange }) => (
+  <label className="flex items-center justify-between py-2 cursor-pointer group">
+    <span className="text-gray-700 group-hover:text-gray-900">{label}</span>
+    <div className="relative">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="sr-only peer"
+      />
+      <div className="h-6 transition-colors bg-gray-300 rounded-full w-11 peer-checked:bg-blue-500" />
+      <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-5" />
+    </div>
+  </label>
+)
 
 const ConfigSection = ({ onConfigChanged }) => {
-  const [showsTime, setshowsTime] = useState(false)
-  const [showsWeather, setShowsWeather] = useState(false)
-  const [showsWallpaper, setShowsWallpaper] = useState(true)
+  const [showTime, setShowTime] = useState(false)
+  const [showWeather, setShowWeather] = useState(false)
+  const [showWallpaper, setShowWallpaper] = useState(true)
   const [unit, setUnit] = useState('C')
-  const [apiKey, setApiKey] = useState(null)
-  const [blurValue, setBlurValue] = useState(0)
+  const [apiKey, setApiKey] = useState('')
+  const [blur, setBlur] = useState(0)
+  const [showApiKey, setShowApiKey] = useState(false)
 
   useEffect(() => {
     settingsStorage.get().then((config) => {
-      setShowsWallpaper(config.showWallpaper ?? true)
-      setshowsTime(config.showsTime ?? false)
-      setBlurValue(config.blur ?? 0)
-      setApiKey(config.weatherApiKey)
-      setShowsWeather(config.showsWeather ?? false)
+      setShowWallpaper(config.showWallpaper ?? true)
+      setShowTime(config.showsTime ?? false)
+      setBlur(config.blur ?? 0)
+      setApiKey(config.weatherApiKey || '')
+      setShowWeather(config.showsWeather ?? false)
+      setUnit(config.weatherUnit || 'C')
     })
   }, [])
 
-  // debounce saving apiKey to storage
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (apiKey) settingsStorage.set('weatherApiKey', apiKey)
+      if (apiKey !== null) settingsStorage.set('weatherApiKey', apiKey)
     }, 500)
-
     return () => clearTimeout(timeout)
   }, [apiKey])
 
-  return (
-    <div className="flex flex-col gap-2">
-      <h2 className="mb-2 text-xl font-bold">Config</h2>
-      <label htmlFor="showsWallpaper" className="flex items-center gap-2">
-        <span className="w-[100px]">Show Wallpaper</span>
-        <input
-          type="checkbox"
-          id="showsWallpaper"
-          checked={showsWallpaper}
-          onChange={(e) => {
-            const checked = e.target.checked
-            setShowsWallpaper(checked)
-            onConfigChanged()
-            settingsStorage.set('showsWallpaper', checked)
-          }}
-        />
-      </label>
-      <label htmlFor="showsTime" className="flex items-center gap-2">
-        <span className="w-[100px]">Show Clock</span>
-        <input
-          type="checkbox"
-          id="showsTime"
-          checked={showsTime}
-          onChange={(e) => {
-            const checked = e.target.checked
-            setshowsTime(checked)
-            onConfigChanged()
-            settingsStorage.set('showsTime', checked)
-          }}
-        />
-      </label>
-      <label htmlFor="showsWeather" className="flex items-center gap-2">
-        <span className="w-[100px]">Show Weather</span>
-        <input
-          type="checkbox"
-          id="showsWeather"
-          checked={showsWeather}
-          onChange={(e) => {
-            const checked = e.target.checked
-            setShowsWeather(checked)
-            settingsStorage.set('showsWeather', checked)
-            onConfigChanged()
-          }}
-        />
-        {showsWeather && (
-          <div className="flex flex-row items-center ml-4 space-x-2">
-            <span>OpenWeatherMap API</span>
-            <input
-              placeholder="Enter your OpenWeatherMap API key here"
-              type="text"
-              className="w-[250px] text-[10px] px-2 py-1 ml-4 border-2 border-gray-300 rounded outline-none focus:border-blue-500"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              onPaste={(e) => {
-                e.stopPropagation()
-              }}
-            />
+  const handleToggle = (key, value, setter) => {
+    setter(value)
+    settingsStorage.set(key, value)
+    onConfigChanged()
+  }
 
-            <span>Unit</span>
-            <select
-              className="w-[50px] text-[10px] px-2 py-1 border-2 border-gray-300 rounded outline-none focus:border-blue-500 text-center"
-              value={unit}
-              onChange={(e) => {
-                setUnit(e.target.value)
-                settingsStorage.set('weatherUnit', e.target.value)
-                onConfigChanged()
-              }}
-            >
-              <option value="C">°C</option>
-              <option value="F">°F</option>
-            </select>
+  return (
+    <div className="flex flex-col gap-6">
+      <h2 className="text-xl font-bold">Display Settings</h2>
+
+      <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <h3 className="mb-3 text-sm font-semibold tracking-wide text-gray-500 uppercase">
+          Components
+        </h3>
+        <div className="divide-y divide-gray-100">
+          <Toggle
+            label="Wallpaper"
+            checked={showWallpaper}
+            onChange={(checked) => handleToggle('showsWallpaper', checked, setShowWallpaper)}
+          />
+          <Toggle
+            label="Clock"
+            checked={showTime}
+            onChange={(checked) => handleToggle('showsTime', checked, setShowTime)}
+          />
+          <Toggle
+            label="Weather"
+            checked={showWeather}
+            onChange={(checked) => handleToggle('showsWeather', checked, setShowWeather)}
+          />
+        </div>
+      </div>
+
+      {showWeather && (
+        <div className="p-4 bg-white border rounded-lg shadow-sm">
+          <h3 className="mb-3 text-sm font-semibold tracking-wide text-gray-500 uppercase">
+            Weather
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block mb-1 text-sm text-gray-600">OpenWeatherMap API Key</label>
+              <div className="relative">
+                <Input
+                  value={apiKey}
+                  setValue={setApiKey}
+                  placeholder="Enter your OpenWeatherMap API key"
+                  type={showApiKey ? 'text' : 'password'}
+                  onPaste={(e) => e.stopPropagation()}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowApiKey(!showApiKey)}
+                  className="absolute text-sm text-gray-400 -translate-y-1/2 right-2 top-1/2 hover:text-gray-600"
+                >
+                  {showApiKey ? 'Hide' : 'Show'}
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="block mb-1 text-sm text-gray-600">Temperature Unit</label>
+              <div className="flex gap-2">
+                {['C', 'F'].map((u) => (
+                  <button
+                    key={u}
+                    onClick={() => {
+                      handleToggle('weatherUnit', u, setUnit)
+                    }}
+                    className={`px-4 py-2 rounded border transition-colors ${
+                      unit === u
+                        ? 'bg-blue-500 text-white border-blue-500'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400'
+                    }`}
+                  >
+                    °{u}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-        )}
-      </label>
-      <label htmlFor="blurSlider" className="flex items-center gap-2">
-        <span className="w-[100px]">Blur</span>
-        <input
-          type="range"
-          id="blurSlider"
-          min="0"
-          max="100"
-          value={blurValue}
-          onChange={(e) => {
-            const newValue = parseInt(e.target.value)
-            setBlurValue(newValue)
-            onConfigChanged()
-            settingsStorage.set('blur', newValue)
-          }}
-        />
-        <span>{blurValue}%</span>
-      </label>
+        </div>
+      )}
+
+      <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <h3 className="mb-3 text-sm font-semibold tracking-wide text-gray-500 uppercase">
+          Effects
+        </h3>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <label className="text-gray-700">Background Blur</label>
+            <span className="text-sm font-medium text-gray-500">{blur}%</span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={blur}
+            onChange={(e) => {
+              const newValue = parseInt(e.target.value)
+              handleToggle('blur', newValue, setBlur)
+            }}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          />
+        </div>
+      </div>
     </div>
   )
 }
