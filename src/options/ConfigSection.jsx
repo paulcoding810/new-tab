@@ -4,12 +4,14 @@ import { settingsStorage } from '../helper'
 const ConfigSection = ({ onConfigChanged }) => {
   const [showsTime, setshowsTime] = useState(false)
   const [showsWeather, setShowsWeather] = useState(false)
+  const [showsWallpaper, setShowsWallpaper] = useState(true)
   const [unit, setUnit] = useState('C')
   const [apiKey, setApiKey] = useState(null)
   const [blurValue, setBlurValue] = useState(0)
 
   useEffect(() => {
     settingsStorage.get().then((config) => {
+      setShowsWallpaper(config.showWallpaper ?? true)
       setshowsTime(config.showsTime ?? false)
       setBlurValue(config.blur ?? 0)
       setApiKey(config.weatherApiKey)
@@ -29,6 +31,20 @@ const ConfigSection = ({ onConfigChanged }) => {
   return (
     <div className="flex flex-col gap-2">
       <h2 className="mb-2 text-xl font-bold">Config</h2>
+      <label htmlFor="showsWallpaper" className="flex items-center gap-2">
+        <span className="w-[100px]">Show Wallpaper</span>
+        <input
+          type="checkbox"
+          id="showsWallpaper"
+          checked={showsWallpaper}
+          onChange={(e) => {
+            const checked = e.target.checked
+            setShowsWallpaper(checked)
+            onConfigChanged()
+            settingsStorage.set('showsWallpaper', checked)
+          }}
+        />
+      </label>
       <label htmlFor="showsTime" className="flex items-center gap-2">
         <span className="w-[100px]">Show Clock</span>
         <input

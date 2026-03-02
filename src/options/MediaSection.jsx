@@ -210,7 +210,7 @@ const MediaSection = ({ onMediaApplied }) => {
                 placeholder="Enter Media URL"
                 selectOnFocus={true}
                 onPaste={(e) => {
-                  e.stopPropagation();
+                  e.stopPropagation()
                 }}
               />
               <button

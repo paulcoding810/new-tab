@@ -49,9 +49,11 @@ export const NewTab = () => {
 
   return (
     <div className="fixed flex flex-col flex-1 w-screen h-screen">
-      <div className="absolute z-[-1] w-full h-full select-none pointer-events-none">
-        {media && <Background media={media} blur={config.blur} onColorThief={setDominantColor} />}
-      </div>
+      {config.showsWallpaper && (
+        <div className="absolute z-[-1] w-full h-full select-none pointer-events-none">
+          {media && <Background media={media} blur={config.blur} onColorThief={setDominantColor} />}
+        </div>
+      )}
       {config.showsTime && (
         <div
           className="absolute text-6xl font-bold text-white bottom-5 right-5"
