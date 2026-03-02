@@ -18,6 +18,7 @@ chrome.runtime.onInstalled.addListener(async () => {
       mediaId: id,
       blur: 0,
       showsTime: true,
+      showsWallpaper: true,
       initialized: true,
       maxBlobSize: 52_428_800, // 50MB in bytes
       showsWeather: false,
