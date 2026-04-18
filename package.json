@@ -1,7 +1,7 @@
 {
   "name": "new-tab",
   "displayName": "New Tab",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "paulcoding",
   "description": "Personalize your browser’s new tab page with high-quality images or videos from external sources.",
   "type": "module",
