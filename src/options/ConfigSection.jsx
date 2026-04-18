@@ -18,32 +18,21 @@ const Toggle = ({ label, checked, onChange }) => (
   </label>
 )
 
-const ConfigSection = ({ onConfigChanged }) => {
-  const [showTime, setShowTime] = useState(false)
-  const [showWeather, setShowWeather] = useState(false)
-  const [showWallpaper, setShowWallpaper] = useState(true)
-  const [unit, setUnit] = useState('C')
-  const [apiKey, setApiKey] = useState('')
-  const [blur, setBlur] = useState(0)
+const ConfigSection = ({ config, onConfigChanged }) => {
+  const [showsTime, setShowsTime] = useState(config.showsTime)
+  const [showsWeather, setShowsWeather] = useState(config.showsWeather)
+  const [showsWallpaper, setShowsWallpaper] = useState(config.showsWallpaper)
+  const [weatherUnit, setWeatherUnit] = useState(config.weatherUnit)
+  const [weatherApiKey, setWeatherApiKey] = useState(config.weatherApiKey)
+  const [blur, setBlur] = useState(config.blur)
   const [showApiKey, setShowApiKey] = useState(false)
 
   useEffect(() => {
-    settingsStorage.get().then((config) => {
-      setShowWallpaper(config.showWallpaper ?? true)
-      setShowTime(config.showsTime ?? false)
-      setBlur(config.blur ?? 0)
-      setApiKey(config.weatherApiKey || '')
-      setShowWeather(config.showsWeather ?? false)
-      setUnit(config.weatherUnit || 'C')
-    })
-  }, [])
-
-  useEffect(() => {
     const timeout = setTimeout(() => {
-      if (apiKey !== null) settingsStorage.set('weatherApiKey', apiKey)
+      if (weatherApiKey !== null) settingsStorage.set('weatherApiKey', weatherApiKey)
     }, 500)
     return () => clearTimeout(timeout)
-  }, [apiKey])
+  }, [weatherApiKey])
 
   const handleToggle = (key, value, setter) => {
     setter(value)
@@ -62,23 +51,23 @@ const ConfigSection = ({ onConfigChanged }) => {
         <div className="divide-y divide-gray-100">
           <Toggle
             label="Wallpaper"
-            checked={showWallpaper}
-            onChange={(checked) => handleToggle('showsWallpaper', checked, setShowWallpaper)}
+            checked={showsWallpaper}
+            onChange={(checked) => handleToggle('showsWallpaper', checked, setShowsWallpaper)}
           />
           <Toggle
             label="Clock"
-            checked={showTime}
-            onChange={(checked) => handleToggle('showsTime', checked, setShowTime)}
+            checked={showsTime}
+            onChange={(checked) => handleToggle('showsTime', checked, setShowsTime)}
           />
           <Toggle
             label="Weather"
-            checked={showWeather}
-            onChange={(checked) => handleToggle('showsWeather', checked, setShowWeather)}
+            checked={showsWeather}
+            onChange={(checked) => handleToggle('showsWeather', checked, setShowsWeather)}
           />
         </div>
       </div>
 
-      {showWeather && (
+      {showsWeather && (
         <div className="p-4 bg-white border rounded-lg shadow-sm">
           <h3 className="mb-3 text-sm font-semibold tracking-wide text-gray-500 uppercase">
             Weather
@@ -88,8 +77,8 @@ const ConfigSection = ({ onConfigChanged }) => {
               <label className="block mb-1 text-sm text-gray-600">OpenWeatherMap API Key</label>
               <div className="relative">
                 <Input
-                  value={apiKey}
-                  setValue={setApiKey}
+                  value={weatherApiKey}
+                  setValue={setWeatherApiKey}
                   placeholder="Enter your OpenWeatherMap API key"
                   type={showApiKey ? 'text' : 'password'}
                   onPaste={(e) => e.stopPropagation()}
@@ -110,10 +99,10 @@ const ConfigSection = ({ onConfigChanged }) => {
                   <button
                     key={u}
                     onClick={() => {
-                      handleToggle('weatherUnit', u, setUnit)
+                      handleToggle('weatherUnit', u, setWeatherUnit)
                     }}
                     className={`px-4 py-2 rounded border transition-colors ${
-                      unit === u
+                      weatherUnit === u
                         ? 'bg-blue-500 text-white border-blue-500'
                         : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400'
                     }`}
