@@ -136,6 +136,19 @@ const ConfigSection = ({ config, onConfigChanged }) => {
             }}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
           />
+          <div className="mt-4 overflow-hidden border rounded-lg">
+            <div
+              className="relative h-32 overflow-hidden"
+              style={{ filter: `blur(${blur / 10}px)` }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80"
+                alt="Blur preview"
+                className="object-cover w-full h-full"
+                crossOrigin="anonymous"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
