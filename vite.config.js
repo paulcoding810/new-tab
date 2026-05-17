@@ -1,7 +1,7 @@
 import { crx } from '@crxjs/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import { patchManifest } from './convert.js'
+import { patchManifest } from './src/convert.js'
 import manifest from './src/manifest.js'
 import svgr from 'vite-plugin-svgr'
 
@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   return {
     build: {
       emptyOutDir: true,
-      outDir: 'build',
+      outDir: `build/${browser}`,
       rollupOptions: {
         output: {
           chunkFileNames: 'assets/chunk-[hash].js',
