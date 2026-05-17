@@ -20,11 +20,11 @@ New Tab
 <a href="https://chromewebstore.google.com/detail/new-tab/jiibpofabngjenalkdgpkhgifmoabnij"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="Get New Tab for Chromium"></a>
 </p>
 
-***
+---
 
 NewTab Extension lets you personalize your browser’s new tab page by fetching and displaying high-quality images or videos from external sources.
 
-***
+---
 
 ## 🚀 Features
 
@@ -40,36 +40,36 @@ Only apply for Chrome
 
 ```bash
 # Start development server
-yarn dev
+pnpm dev
 ```
 
 ### Building
 
 ```bash
-yarn build # for Chrome extension
-yarn build:firefox # for Firefox add-on
-```
-
-### Packing
-
-To create a zip file for distribution, run:
-
-```bash
-yarn zip # for chrome
-yarn zip:firefox # for firefox
+pnpm build # for Chrome extension
+pnpm build:firefox # for Firefox add-on
 ```
 
 ### Loading in Chrome
 
 1. Enable Developer mode
 2. Click "Load unpacked"
-3. Select the `build` folder
+3. Select the `build/chrome` folder
 
 ### Loading in Firefox
 
 1. Navigate to `about:debugging#/runtime/this-firefox`
 2. Click "Load Temporary Add-on"
-3. Select the `build` folder
+3. Select the `build/firefox` folder
+
+### Packing
+
+To create a zip file for distribution, run:
+
+```bash
+pnpm zip # for chrome
+pnpm zip:firefox # for firefox
+```
 
 ---
 
@@ -83,10 +83,8 @@ yarn zip:firefox # for firefox
 [Mozilla]: https://addons.mozilla.org/addon/new-tab-paulcoding/
 [Chrome]: https://chromewebstore.google.com/detail/new-tab/jiibpofabngjenalkdgpkhgifmoabnij
 [License]: https://raw.githubusercontent.com/paulcoding810/new-tab/refs/heads/main/LICENSE
-
 [Commit Rate]: https://github.com/paulcoding810/new-tab/commits/main
 [Issues]: https://github.com/paulcoding810/new-tab/issues
-
 [Badge Commits]: https://img.shields.io/github/commit-activity/m/paulcoding810/new-tab?label=Commits
 [Badge Mozilla]: https://img.shields.io/amo/v/new-tab-paulcoding
 [Badge Chrome]: https://img.shields.io/chrome-web-store/v/jiibpofabngjenalkdgpkhgifmoabnij
